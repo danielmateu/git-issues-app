@@ -1,12 +1,13 @@
 
 import { useLabels } from '../../hooks/useLabels'
+import { LoadingIcon } from '../../shared/components/LoadingIcon'
 
 export const LabelPicker = () => {
 
   const { labelsQuery } = useLabels()
 
-  if (labelsQuery.isLoading) { // isLoading is a boolean
-    return <div>Loading...</div>
+  if (labelsQuery.isLoading) { // isLoading se carga la data por primera vez. isFetching se refresca la data
+    return <LoadingIcon />
   }
 
   return (
@@ -16,10 +17,11 @@ export const LabelPicker = () => {
           <span
             key={label.id}
             className="badge rounded-pill m-1 label-picker"
-            style={{ 
+            style={{
               border: `1px solid #${label.color}`,
               // backgroundColor: `#${label.color}`, 
-              color: `${label.color}` }}
+              color: `${label.color}`
+            }}
           >
             {label.name}
           </span>
