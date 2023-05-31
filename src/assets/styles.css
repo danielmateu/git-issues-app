@@ -34,6 +34,10 @@ h3 {
 .label-picker:hover {
     background-color: rgba(255, 255, 255, 0.1);
     transition: all .5s;
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    -ms-transition: all .5s;
+    -o-transition: all .5s;
 }
 
 .sk-chase {
@@ -60,6 +64,7 @@ h3 {
     background-color: #fff;
     border-radius: 100%;
     animation: sk-chase-dot-before 2.0s infinite ease-in-out both;
+    -webkit-animation: sk-chase-dot-before 2.0s infinite ease-in-out both;
 }
 
 .sk-chase-dot:nth-child(1) {
@@ -133,4 +138,8 @@ h3 {
     0% {
         transform: scale(1.0);
     }
+}
+
+.label-active {
+    background-color: rgba(255, 255, 255, 0.5);
 }

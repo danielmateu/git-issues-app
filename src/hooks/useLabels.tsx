@@ -17,7 +17,7 @@ export const useLabels = () => {
             staleTime: 1000 * 60 * 60, // 1 hour
             // initialData: [],
             // placeholderData: [],
-            initialData: [
+            placeholderData: [
                 {
                     id: 725156255,
                     node_id: "MDU6TGFiZWw3MjUxNTYyNTU=",
