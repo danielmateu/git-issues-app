@@ -5,7 +5,7 @@ import { Issue } from "../issues/interfaces";
 
 const getIssues = async (): Promise<Issue> => {
     const { data } = await githubApi.get('/issues');
-    console.log(data);
+    // console.log(data);
     return data;
 }
 

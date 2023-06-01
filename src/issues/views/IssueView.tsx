@@ -5,39 +5,30 @@ import { Issue } from '../interfaces';
 import { FC } from 'react';
 import { LoadingIcon } from '../../shared/components/LoadingIcon';
 
-
-
 interface Props {
   body: string;
   issue: Issue;
 
 }
 
-
 export const IssueView: FC<Props> = ({ body, issue }) => {
 
   const params = useParams<{ id: string }>();
   const { id = '0' } = params;
 
-  const { issueQuery } = useIssue((+id))
-
-  const { data: issueData } = issueQuery;
-
-  // console.log({ issueData });
+  const { issueQuery, issueCommentsQuery } = useIssue((+id))
 
   // LoadingIcon
-  
-    if (issueQuery.isLoading) {
-      return <LoadingIcon />
-    }
-  
+
+  if (issueQuery.isLoading) {
+    return <LoadingIcon />
+  }
 
   // issueQuery.data <----- no hay data
   // Navigate to = './issues/list'
-    if (!issueQuery.data) {
-      return <Navigate to='./issues/list' />
-    }
-  
+  if (!issueQuery.data) {
+    return <Navigate to='./issues/list' />
+  }
 
   // issueQuery.data <----- si hay data cargar el componente
   return (
@@ -46,15 +37,24 @@ export const IssueView: FC<Props> = ({ body, issue }) => {
         <Link to='./issues/list'>Go Back</Link>
       </div>
 
-      {/* Primer comentario */}
-      {/* <IssueComment body={issueQuery.data?.body}/> */}
       <IssueComment
+        body={issueQuery.data?.body}
         issue={issueQuery.data}
       />
 
-      {/* Comentario de otros */}
-      {/* <IssueComment body={comment2} />
-      <IssueComment body={comment3} /> */}
+      {
+        issueCommentsQuery.isLoading && <LoadingIcon />
+      }
+
+      {
+        issueCommentsQuery.data?.map((issue) => (
+          <IssueComment
+            key={issue.id}
+            body={issue.body}
+            issue={issue}
+          />
+        ))
+      }
     </div>
   )
 }

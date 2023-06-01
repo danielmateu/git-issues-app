@@ -2,8 +2,8 @@ import { FC } from 'react';
 import { FiInfo, FiMessageSquare, FiCheckCircle } from 'react-icons/fi';
 import { Issue, State } from '../interfaces';
 import { useNavigate } from 'react-router-dom';
-
-
+import { useQueryClient } from '@tanstack/react-query';
+import { getIssueComments, getIssueInfo } from '../../hooks/useIssue';
 
 interface Props {
     issue: Issue;
@@ -16,10 +16,31 @@ export const IssueItem: FC<Props> = ({ issue }) => {
 
     const navigate = useNavigate()
 
+    const queryClient = useQueryClient();
+
+    const prefecthData = () => {
+        // console.log('mouse enter');
+        queryClient.prefetchQuery(['issue', number],
+            () => getIssueInfo(issue.number),
+        )
+
+        queryClient.prefetchQuery(['issue', number, 'comments'],
+            () => getIssueComments(issue.number),
+        )
+    }
+
+    const preSetData = () => {
+        // console.log('mouse enter');
+        queryClient.setQueryData(['issue', number],
+            issue
+        )
+    }
+
     return (
         <div
             className="card mb-2 issue"
             onClick={() => navigate(`/issues/issue/${number}`)}
+            onMouseEnter={prefecthData}
         >
             <div className="card-body d-flex align-items-center">
 
