@@ -1,7 +1,9 @@
 import { useIssues } from '../../hooks';
+import { LoadingIcon } from '../../shared/components/LoadingIcon';
 import { IssueList } from '../components/IssueList';
 import { LabelPicker } from '../components/LabelPicker';
 import { useState } from 'react';
+
 
 
 export const ListView = () => {
@@ -20,7 +22,15 @@ export const ListView = () => {
     <div className="row mt-5">
 
       <div className="col-8">
-        <IssueList />
+        {
+          issuesQuery.isLoading
+            ? <LoadingIcon />
+            // : <IssueList
+            //   issues={issuesQuery.data?.filter((issue) => selectedLabels.length === 0 || issue.labels.some((label) => selectedLabels.includes(label.name))) || []}
+            // />
+            : <IssueList issues={issuesQuery.data || []} />
+        }
+
       </div>
 
       <div className="col-4">
