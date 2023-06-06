@@ -4,6 +4,7 @@ import { Issue, State } from '../interfaces';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { getIssueComments, getIssueInfo } from '../../hooks/useIssue';
+import { timeSince } from '../../helpers';
 
 interface Props {
     issue: Issue;
@@ -32,7 +33,10 @@ export const IssueItem: FC<Props> = ({ issue }) => {
     const preSetData = () => {
         // console.log('mouse enter');
         queryClient.setQueryData(['issue', number],
-            issue
+            issue,
+            {
+                updatedAt: new Date().getTime() + 100000
+            }
         )
     }
 
@@ -52,9 +56,20 @@ export const IssueItem: FC<Props> = ({ issue }) => {
 
                 <div className="d-flex flex-column flex-fill px-2">
                     <span>{title}</span>
-                    <span className="issue-subinfo">#{number} opened {Math.floor((new Date().getTime() - new Date(created_at).getTime()) / (1000 * 3600 * 24))} {
-                        Math.floor((new Date().getTime() - new Date(created_at).getTime()) / (1000 * 3600 * 24)) === 1 ? 'day' : 'days'
-                    } ago by <span className='fw-bold'>{user.login}</span></span>
+                    <span className="issue-subinfo">#{number} opened {timeSince(created_at)} ago</span>
+                    <div>
+                        {
+                            issue.labels.map((label) => (
+                                <span
+                                    key={label.id}
+                                    className="badge rounded-pill me-1"
+                                    style={{ backgroundColor: `#${label.color}`, color: '#252525' }}
+                                >
+                                    {label.name}
+                                </span>
+                            ))
+                        }
+                    </div>
                 </div>
 
                 <div className='d-flex align-items-center'>
