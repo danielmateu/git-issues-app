@@ -143,3 +143,7 @@ h3 {
 .label-active {
     background-color: rgba(255, 255, 255, 0.5);
 }
+
+.sk-chase {
+    margin: 0 auto;
+}

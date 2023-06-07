@@ -4,14 +4,15 @@ import { IssueList } from '../components/IssueList';
 import { LabelPicker } from '../components/LabelPicker';
 import { useState } from 'react';
 import { State } from '../interfaces';
+import { useIssuesInfinite } from '../../hooks/useIssuesInfinite';
 
 
 
-export const ListView = () => {
+export const ListViewInfinite = () => {
 
   const [selectedLabels, setSelectedLabels] = useState<string[]>([])
   const [state, setState] = useState<State>()
-  const { issuesQuery, page, nextPage, prevPage } = useIssues({ state, labels: selectedLabels })
+  const { issuesQuery } = useIssuesInfinite({ state, labels: selectedLabels })
 
   const onStateChange = (newState: State) => {
     setState(newState)
@@ -23,6 +24,8 @@ export const ListView = () => {
       : setSelectedLabels([...selectedLabels, labelName])
   }
 
+
+
   return (
     <div className="row mt-5">
 
@@ -33,11 +36,19 @@ export const ListView = () => {
             : <IssueList
               state={state}
               onStateChange={(newState) => setState(newState)}
-              issues={issuesQuery.data || []}
+              // issues={issuesQuery.data || []}
+              issues={issuesQuery.data?.pages.flatMap((page) => page) || []}
             />
         }
 
-        <div className='d-flex mt-2 justify-content-around align-items-center'>
+        <button
+          disabled={!issuesQuery.hasNextPage || issuesQuery.isFetchingNextPage}
+          onClick={() => issuesQuery.fetchNextPage()}
+          className='btn btn-outline-primary mt-2'>
+          {issuesQuery.isFetching ? 'Loading...' : 'Load More...'}
+        </button>
+
+        {/* <div className='d-flex mt-2 justify-content-around align-items-center'>
           <button
             disabled={issuesQuery.isFetching}
             onClick={prevPage}
@@ -47,7 +58,7 @@ export const ListView = () => {
             disabled={issuesQuery.isFetching}
             onClick={nextPage}
             className='btn btn-outline-primary'>Next</button>
-        </div>
+        </div> */}
 
       </div>
 

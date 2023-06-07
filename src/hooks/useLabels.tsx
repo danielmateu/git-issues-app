@@ -7,7 +7,7 @@ export const useLabels = () => {
 
 
     const getLabels = async (): Promise<Label[]> => {
-        await sleep(2000)
+        // await sleep(2000)
         const { data } = await githubApi.get<Label[]>('/labels?per_page=100', {
             headers: {
                 authorization: null
